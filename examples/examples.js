@@ -26,14 +26,14 @@ function pow2(x, y) {
 }
 
 var pow3 = pat()
-  .caseof(_.isNumber, 0, function() { return 1; })
-  .caseof(_.isNumber, _.isNumber, function(x, y) { 
+  .caseof(Number, 0, function() { return 1; })
+  .caseof(Number, Number, function(x, y) { 
     return x * pow2(x, y - 1 ); 
   });
 
 var pow4 = pat(function(x, y) {
     return x * pow3(x, y - 1); 
-  }).caseof(_.isNumber, 0, function() {
+  }).caseof(Number, 0, function() {
     return 1;
   });
 
