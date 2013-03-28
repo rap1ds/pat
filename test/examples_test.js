@@ -17,6 +17,7 @@ describe("examples", function(){
       expect(fn(2, 8)).to.be(256);
       expect(fn(2, 9)).to.be(512);
       expect(fn(2, 10)).to.be(1024);
+      expect(function() { fn("foo", "bar") }).to.throwError();
     }
 
     test(examples.pow1);

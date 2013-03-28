@@ -85,5 +85,54 @@ describe("caseof", function() {
 
     expect(f1("foo")).to.equal("f1");
     expect(f1(1)).to.equal("match");
+  });
+
+  it("matches primitive constructors", function() {
+    var fInt = function() { return "fInt" };
+    var fStr = function() { return "fStr" };
+    var fBool = function() { return "fBool" };
+    var fArr = function() { return "fArr" };
+    var fObj = function() { return "fObj" };
+    var matchInt = function() { return "matchInt" };
+    var matchStr = function() { return "matchStr" };
+    var matchBool = function() { return "matchBool" };
+    var matchArr = function() { return "matchArr" };
+    var matchObj = function() { return "matchObj" };
+
+    fInt = pat(fInt).caseof(Number, matchInt);
+    fStr = pat(fStr).caseof(String, matchStr);
+    fBool = pat(fBool).caseof(Boolean, matchBool);
+    fArr = pat(fArr).caseof(Array, matchArr);
+    fObj = pat(fObj).caseof(Object, matchObj);
+
+    expect(fInt(0)).to.equal("matchInt");
+    expect(fInt(1)).to.equal("matchInt");
+    expect(fStr("bar")).to.equal("matchStr");
+    expect(fStr("foo")).to.equal("matchStr");
+    expect(fBool(false)).to.equal("matchBool");
+    expect(fBool(true)).to.equal("matchBool");
+    expect(fArr(["foo", "baz"])).to.equal("matchArr");
+    expect(fArr(["foo", "bar"])).to.equal("matchArr");
+    expect(fObj({"foo": "baz"})).to.equal("matchObj");
+    expect(fObj({"foo": "bar"})).to.equal("matchObj");
   })
+
+  it("throws, if no match", function() {
+    var fn = function() {};
+    var match = function() { return "match" };
+
+    var f1 = pat(fn)
+      .caseof(_.isNumber, match);
+
+    var f2 = pat()
+      .caseof(_.isNumber, match);
+
+    var f3 = pat()
+      .caseof(_.isNumber, match)
+      .otherwise(fn);
+
+    expect(function() { f1("foo") }).not.to.throwError();
+    expect(function() { f2("foo") }).to.throwError();
+    expect(function() { f3("foo") }).not.to.throwError();
+  });
 })
