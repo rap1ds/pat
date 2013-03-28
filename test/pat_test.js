@@ -1,7 +1,8 @@
 "use strict";
 
-var pat = require("../lib/pat")
+var pat = require("../lib/pat");
 var expect = require("expect.js");
+var _ = require("lodash");
 
 describe("pat", function(){
   it("returns a function", function() {
@@ -75,4 +76,14 @@ describe("caseof", function() {
     expect(f1(0, 1)).to.equal("match1");
     expect(f1(1, 1)).to.equal("match2");
   });
+
+  it("matches function", function() {
+    var f1 = function() { return "f1" };
+    var match = function() { return "match" };
+
+    f1 = pat(f1).caseof(_.isNumber, match);
+
+    expect(f1("foo")).to.equal("f1");
+    expect(f1(1)).to.equal("match");
+  })
 })
