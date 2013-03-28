@@ -1,11 +1,12 @@
 module.exports = function(grunt) {
+  "use strict";
 
   grunt.loadNpmTasks('grunt-mocha-test');
 
   // Project configuration.
   grunt.initConfig({
     pkg: '<json:package.json>',
-    test: {
+    mochaTest: {
       files: ['test/**/*.js']
     },
     lint: {
