@@ -1,0 +1,40 @@
+{
+  "name": "pat",
+  "description": "Pattern matching in JavaScript",
+  "version": "0.1.0",
+  "homepage": "https://github.com/rap1ds/pat",
+  "author": {
+    "name": "Mikko Koski",
+    "email": "mikkokos@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rap1ds/pat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rap1ds/pat/issues"
+  },
+  "devDependencies": {
+    "expect": "0.0.x"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/rap1ds/pat/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "lib/pat",
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt": "~0.3.15"
+  },
+  "keywords": []
+}
