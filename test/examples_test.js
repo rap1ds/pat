@@ -26,3 +26,18 @@ describe("examples", function(){
     test(examples.pow4);
   })
 });
+
+describe("sum", function(){
+  it("sum", function() {
+    function test(fn) {
+      expect(fn(0, 1, 2, 3, 4, 5)).to.be(15);
+      expect(fn("0", "1", "2", "3", "4", "5")).to.be(15);
+      expect(fn([0, 1, 2, 3, 4, 5])).to.be(15);
+      expect(fn(["0", "1", "2", "3", "4", "5"])).to.be(15);
+      expect(fn()).to.be(0);
+      expect(fn([])).to.be(0);
+    }
+
+    test(examples.sum);
+  })
+});

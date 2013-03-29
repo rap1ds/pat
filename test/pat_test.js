@@ -87,6 +87,28 @@ describe("caseof", function() {
     expect(f1(1)).to.equal("match");
   });
 
+  it("matches any", function() {
+    var f1 = function() { return "f1" };
+    var match = function() { return "match" };
+
+    f1 = pat(f1).caseof(pat._, _.isNumber, match);
+
+    expect(f1("foo", "foo")).to.equal("f1");
+    expect(f1(1, 1)).to.equal("match");
+    expect(f1(null, 1)).to.equal("match");
+    expect(f1({"foo": "bar"}, 1)).to.equal("match");
+  });
+
+  it("matches no args", function() {
+    var f1 = function() { return "f1" };
+    var match = function() { return "match" };
+
+    f1 = pat(f1).caseof(match);
+
+    expect(f1("foo")).to.equal("f1");
+    expect(f1()).to.equal("match");
+  })
+
   it("matches primitive constructors", function() {
     var fInt = function() { return "fInt" };
     var fStr = function() { return "fStr" };
@@ -115,7 +137,7 @@ describe("caseof", function() {
     expect(fArr(["foo", "bar"])).to.equal("matchArr");
     expect(fObj({"foo": "baz"})).to.equal("matchObj");
     expect(fObj({"foo": "bar"})).to.equal("matchObj");
-  })
+  });
 
   it("throws, if no match", function() {
     var fn = function() {};
@@ -134,5 +156,20 @@ describe("caseof", function() {
     expect(function() { f1("foo") }).not.to.throwError();
     expect(function() { f2("foo") }).to.throwError();
     expect(function() { f3("foo") }).not.to.throwError();
+  });
+
+  it("all rest", function() {
+    var fn = function() { return "fn" };
+    var match = function() { return "match" };
+
+    var f1 = pat(fn)
+      .caseof(pat.rest(_.isNumber), match);
+
+    var f2 = pat(fn)
+      .caseof("foo", "bar", pat.rest(_.isNumber), match);
+    expect(f1("foo")).to.equal("fn");
+    expect(f1(1, 2, 3)).to.equal("match");
+    expect(f2("foo", "bar", 1, 2, 3)).to.equal("match");
+    expect(f2("foo", "bar", 1, 2, 3, true)).to.equal("fn");
   });
 })

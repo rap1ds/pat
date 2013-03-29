@@ -37,9 +37,56 @@ var pow4 = pat(function(x, y) {
     return 1;
   });
 
+/*
+  Let's write a `sum` function, which returns the sum of the given
+  arguments. It is very liberal with the arguments, and can take the following:
+
+  - any number of ints
+  - int array
+  - any number of strings
+  - string array
+
+  If no arguments is given to `sum`, return 0
+  If empty array is given, return 0
+
+  Otherwise, throw "Illegal arguments" exception
+
+  Usage:
+
+  sum(0, 1, 2, 3, 4, 5) === 15;
+  sum("0", "1", "2", "3", "4", "5") === 15;
+  sum([0, 1, 2, 3, 4, 5]) === 15;
+  sum(["0", "1", "2", "3", "4", "5"]) === 15;
+  sum() === 0;
+  sum([]) === 0;
+
+*/
+
+var arrayOf = function(fn) {
+  return function(arr) {
+    return arr.every(fn);
+  }
+}
+
+var sum = pat()
+  .caseof(function() { return 0 })
+  .caseof([], function() { return 0 })
+  .caseof(pat.rest(_.isString), function() {
+    return sum(_.toArray(arguments)); })
+  .caseof(pat.rest(_.isNumber), function() { 
+    return sum(_.toArray(arguments)); })
+  .caseof(arrayOf(_.isString), function(stringArray) { 
+    return sum(stringArray.map(function(n) { 
+      return parseInt(n, 10); }));
+  })
+  .caseof(arrayOf(_.isNumber), function(intArray) {
+    return intArray.reduce(function(a, b) { return a + b }, 0);
+  });
+
 module.exports = Object.freeze({
   pow1: pow1,
   pow2: pow2,
   pow3: pow3,
-  pow4: pow4
+  pow4: pow4,
+  sum: sum
 });
