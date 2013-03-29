@@ -172,4 +172,16 @@ describe("caseof", function() {
     expect(f2("foo", "bar", 1, 2, 3)).to.equal("match");
     expect(f2("foo", "bar", 1, 2, 3, true)).to.equal("fn");
   });
+
+  it("packs all rest args to array", function() {
+    var fn = function() { return "fn" };
+    var match = function(first, second, rest) { return rest };
+
+    var f1 = pat(fn)
+      .caseof(Number, Number, pat.rest(_.isNumber), match);
+
+    expect(f1(1)).to.equal("fn");
+    expect(f1(1, 2)).to.eql([]);
+    expect(f1(1, 2, 3, 4, 5)).to.eql([3, 4, 5]);
+  })
 })

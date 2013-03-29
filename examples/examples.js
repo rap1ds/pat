@@ -71,10 +71,10 @@ var arrayOf = function(fn) {
 var sum = pat()
   .caseof(function() { return 0 })
   .caseof([], function() { return 0 })
-  .caseof(pat.rest(_.isString), function() {
-    return sum(_.toArray(arguments)); })
-  .caseof(pat.rest(_.isNumber), function() { 
-    return sum(_.toArray(arguments)); })
+  .caseof(pat.rest(_.isString), function(rest) {
+    return sum(rest); })
+  .caseof(pat.rest(_.isNumber), function(rest) { 
+    return sum(rest); })
   .caseof(arrayOf(_.isString), function(stringArray) { 
     return sum(stringArray.map(function(n) { 
       return parseInt(n, 10); }));
