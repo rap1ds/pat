@@ -62,21 +62,40 @@ var pow4 = pat(function(x, y) {
 
 */
 
+function sum1() {
+  var args = _.toArray(arguments);
+
+  if(!args.length) {
+    return 0;
+  } 
+  if(_.isArray(args[0])) {
+    args = args[0];
+  } 
+  if(args.every(_.isString)) {
+    args = args.map(function(n) { return parseInt(n, 10)});
+  }
+  if(args.every(_.isNumber)) {
+    return args.reduce(function(a, b) { return a + b }, 0);
+  } else {
+    throw "Illegal arguments";
+  }
+}
+
 var arrayOf = function(fn) {
   return function(arr) {
     return arr.every(fn);
   }
 }
 
-var sum = pat()
+var sum2 = pat()
   .caseof(function() { return 0 })
   .caseof([], function() { return 0 })
   .caseof(pat.rest(_.isString), function(rest) {
-    return sum(rest); })
-  .caseof(pat.rest(_.isNumber), function(rest) { 
-    return sum(rest); })
-  .caseof(arrayOf(_.isString), function(stringArray) { 
-    return sum(stringArray.map(function(n) { 
+    return sum2(rest); })
+  .caseof(pat.rest(_.isNumber), function(rest) {
+    return sum2(rest); })
+  .caseof(arrayOf(_.isString), function(stringArray) {
+    return sum2(stringArray.map(function(n) {
       return parseInt(n, 10); }));
   })
   .caseof(arrayOf(_.isNumber), function(intArray) {
@@ -88,5 +107,6 @@ module.exports = Object.freeze({
   pow2: pow2,
   pow3: pow3,
   pow4: pow4,
-  sum: sum
+  sum1: sum1,
+  sum2: sum2
 });

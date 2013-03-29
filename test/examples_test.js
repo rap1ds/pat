@@ -38,6 +38,7 @@ describe("sum", function(){
       expect(fn([])).to.be(0);
     }
 
-    test(examples.sum);
+    test(examples.sum1);
+    test(examples.sum2);
   })
 });
