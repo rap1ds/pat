@@ -6,6 +6,8 @@ var expect = require("expect.js");
 describe("examples", function(){
   it("pow", function() {
     function test(fn) {
+      expect(fn(2, -2)).to.be(0.25);
+      expect(fn(2, -1)).to.be(0.5);
       expect(fn(2, 0)).to.be(1);
       expect(fn(2, 1)).to.be(2);
       expect(fn(2, 2)).to.be(4);

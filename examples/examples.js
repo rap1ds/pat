@@ -7,11 +7,13 @@ function pow1(x, y) {
   } else if(y === 0) {
     return 1;
   } else {
+    var isNegative = y < 0;
+    y = y < 0 ? y * (-1) : y;
     var n = x;
     for(var i = 1; i < y; i++) {
       n = n * x;
     }
-    return n;
+    return isNegative ? 1 / n : n;
   }
 }
 
@@ -21,20 +23,34 @@ function pow2(x, y) {
   } else if(y === 0) {
     return 1;
   } else {
-    return x * pow1(x, y - 1);
+    var isNegative = y < 0;
+    y = y < 0 ? y * (-1) : y;
+    var result = x * pow2(x, y - 1);
+    return isNegative ? 1 / result : result;
+  }
+}
+
+function lessThan(a) {
+  return function(b) {
+    return _.isNumber(b) && b < a;
   }
 }
 
 var pow3 = pat()
   .caseof(Number, 0, function() { return 1; })
+  .caseof(Number, lessThan(0), function(x, y) { return 1 / pow3(x, (y * (-1))) })
   .caseof(Number, Number, function(x, y) { 
-    return x * pow2(x, y - 1 ); 
+    return x * pow3(x, y - 1 ); 
   });
 
 var pow4 = pat(function(x, y) {
-    return x * pow3(x, y - 1); 
-  }).caseof(Number, 0, function() {
+    return x * pow4(x, y - 1); 
+  })
+  .caseof(Number, 0, function() {
     return 1;
+  })
+  .caseof(Number, lessThan(0), function(x, y) {
+    return 1 / pow4(x, (y * (-1)));
   });
 
 /*
