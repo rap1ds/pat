@@ -1,6 +1,9 @@
 var pat = require("../lib/pat");
 var _ = require("lodash");
 
+/**
+ * For-loop, no pattern mathing
+ */
 function pow1(x, y) {
   if(!_.isNumber(x) || !_.isNumber(y)) {
     throw new Error("Illegal arguments");
@@ -17,6 +20,9 @@ function pow1(x, y) {
   }
 }
 
+/**
+ * Recursive, no pattern mathing
+ */
 function pow2(x, y) {
   if(!_.isNumber(x) || !_.isNumber(y)) {
     throw new Error("Illegal arguments");
@@ -36,6 +42,9 @@ function lessThan(a) {
   }
 }
 
+/**
+ * Pattern matching. Throws error if no pattern is matched.
+ */
 var pow3 = pat()
   .caseof(Number, 0, function() { return 1; })
   .caseof(Number, lessThan(0), function(x, y) { return 1 / pow3(x, (y * (-1))) })
@@ -43,6 +52,9 @@ var pow3 = pat()
     return x * pow3(x, y - 1 ); 
   });
 
+/**
+ * Different pattern mathing syntax. Doesn't throw error.
+ */
 var pow4 = pat(function(x, y) {
     return x * pow4(x, y - 1); 
   })
@@ -78,6 +90,9 @@ var pow4 = pat(function(x, y) {
 
 */
 
+/**
+ * No pattern mathing
+ */
 function sum1() {
   var args = _.toArray(arguments);
 
@@ -103,6 +118,9 @@ var arrayOf = function(fn) {
   }
 }
 
+/**
+ * With pattern mathing
+ */
 var sum2 = pat()
   .caseof(function() { return 0 })
   .caseof([], function() { return 0 })
