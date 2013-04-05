@@ -84,12 +84,21 @@ Dynamic typing has both advantages and disadvantages. The above example, lack of
 
 However, implementing the functions to work with multiple different types of arguments is not very interesting coding task. For example, in the `sum` function, the real beef of the functions is the `a + b`. However, if you'd implement sum to liberally take strings and arrays and whatnot, you'd end up writing 10 lines of if-elses to just get the arguments right.
 
+(To be continued...)
+
 ## Examples
 
 See [examples/](examples/)
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](https://github.com/cowboy/grunt).
+
+## Inspiration
+
+* [Coursera - Programming Languages by Dan Grossman](https://www.coursera.org/course/proglang)
+* [Standard ML](http://www.smlnj.org/)
+* [wu.js](http://fitzgen.github.com/wu.js/)
+* [match-js](https://github.com/jfd/match-js)
 
 ## License
 Copyright (c) 2013 Mikko Koski  
