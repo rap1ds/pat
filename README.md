@@ -29,15 +29,11 @@ When `pow` is called, the function has to choose which variant to use. Tradition
 function pow1(x, y) {
   if(y === 0) {
     return 1;
+  } else if(y < 0) {
+    return 1 / x * pow1(x, ((y * -1) - 1));
+  } else {
+    return x * pow1(x, y - 1);
   }
-
-  if(y < 0) {
-    var isNegative = y < 0;
-    y = isNegative ? y * (-1) : y;
-  }
-  
-  var result = x * pow1(x, y - 1);
-  return isNegative ? 1 / result : result;
 }
 ```
 
@@ -57,7 +53,7 @@ var pow2 = pat(function(x, y) {
     return 1;
   })
   .caseof(Number, lessThan(0), function(x, y) {
-    return 1 / pow2(x, (y * (-1)));
+    return 1 / x * pow2(x, ((y * -1) - 1));
   });
 ```
 
