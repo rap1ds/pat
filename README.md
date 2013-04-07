@@ -74,8 +74,6 @@ sum(1, 2) === 3
 sum("1", "2") === "12"
 ```
 
-And the above error is not only a hypothetical error which doesn't happen in a real-world. In fact, it does. Consider a web form with two input fields and a button with a label "Sum". When the "Sum" button is clicked, you take the values of the two inputs, pass them to `sum` function and show the result to the user. But hey! Did you remember that the values from the form are `String`s, not `int`s?
-
 Dynamic typing has both advantages and disadvantages. The above example, lack of compiler warnings demonstrates one of the disadvantages. However, the fact that any argument can be passed to function can be also convenient. We JavaScript devs have learned how to use this to write APIs that can take "almost" any argument, and work properly. For example, it's not too hard to implement the `sum` function so that it in fact could work properly with a `string` or an array of ints or maybe even array of strings.
 
 However, implementing the functions to work with multiple different types of arguments is not very interesting coding task. For example, in the `sum` function, the real beef of the functions is the `a + b`. However, if you'd implement sum to liberally take strings and arrays and whatnot, you'd end up writing 10 lines of if-elses to just get the arguments right.
