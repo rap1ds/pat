@@ -22,16 +22,16 @@ describe("pat", function(){
 
 describe("caseof", function() {
   it("matches primitives", function() {
-    var fInt = function() { return "fInt" };
-    var fStr = function() { return "fStr" };
-    var fBool = function() { return "fBool" };
-    var fArr = function() { return "fArr" };
-    var fObj = function() { return "fObj" };
-    var matchInt = function() { return "matchInt" };
-    var matchStr = function() { return "matchStr" };
-    var matchBool = function() { return "matchBool" };
-    var matchArr = function() { return "matchArr" };
-    var matchObj = function() { return "matchObj" };
+    var fInt = function() { return "fInt"; };
+    var fStr = function() { return "fStr"; };
+    var fBool = function() { return "fBool"; };
+    var fArr = function() { return "fArr"; };
+    var fObj = function() { return "fObj"; };
+    var matchInt = function() { return "matchInt"; };
+    var matchStr = function() { return "matchStr"; };
+    var matchBool = function() { return "matchBool"; };
+    var matchArr = function() { return "matchArr"; };
+    var matchObj = function() { return "matchObj"; };
 
     fInt = pat(fInt).caseof(1, matchInt);
     fStr = pat(fStr).caseof("foo", matchStr);
@@ -52,8 +52,8 @@ describe("caseof", function() {
   });
 
   it("matches multiple arguments", function() {
-    var f1 = function() { return "f1" };
-    var match = function() { return "match" };
+    var f1 = function() { return "f1"; };
+    var match = function() { return "match"; };
 
     f1 = pat(f1).caseof(0, 1, match);
 
@@ -64,9 +64,9 @@ describe("caseof", function() {
   });
 
   it("matches multiple caseofs", function() {
-    var f1 = function() { return "f1" };
-    var match1 = function() { return "match1" };
-    var match2 = function() { return "match2" };
+    var f1 = function() { return "f1"; };
+    var match1 = function() { return "match1"; };
+    var match2 = function() { return "match2"; };
 
     f1 = pat(f1)
       .caseof(0, 1, match1)
@@ -78,8 +78,8 @@ describe("caseof", function() {
   });
 
   it("matches function", function() {
-    var f1 = function() { return "f1" };
-    var match = function() { return "match" };
+    var f1 = function() { return "f1"; };
+    var match = function() { return "match"; };
 
     f1 = pat(f1).caseof(_.isNumber, match);
 
@@ -88,8 +88,8 @@ describe("caseof", function() {
   });
 
   it("matches any", function() {
-    var f1 = function() { return "f1" };
-    var match = function() { return "match" };
+    var f1 = function() { return "f1"; };
+    var match = function() { return "match"; };
 
     f1 = pat(f1).caseof(pat._, _.isNumber, match);
 
@@ -100,26 +100,26 @@ describe("caseof", function() {
   });
 
   it("matches no args", function() {
-    var f1 = function() { return "f1" };
-    var match = function() { return "match" };
+    var f1 = function() { return "f1"; };
+    var match = function() { return "match"; };
 
     f1 = pat(f1).caseof(match);
 
     expect(f1("foo")).to.equal("f1");
     expect(f1()).to.equal("match");
-  })
+  });
 
   it("matches primitive constructors", function() {
-    var fInt = function() { return "fInt" };
-    var fStr = function() { return "fStr" };
-    var fBool = function() { return "fBool" };
-    var fArr = function() { return "fArr" };
-    var fObj = function() { return "fObj" };
-    var matchInt = function() { return "matchInt" };
-    var matchStr = function() { return "matchStr" };
-    var matchBool = function() { return "matchBool" };
-    var matchArr = function() { return "matchArr" };
-    var matchObj = function() { return "matchObj" };
+    var fInt = function() { return "fInt"; };
+    var fStr = function() { return "fStr"; };
+    var fBool = function() { return "fBool"; };
+    var fArr = function() { return "fArr"; };
+    var fObj = function() { return "fObj"; };
+    var matchInt = function() { return "matchInt"; };
+    var matchStr = function() { return "matchStr"; };
+    var matchBool = function() { return "matchBool"; };
+    var matchArr = function() { return "matchArr"; };
+    var matchObj = function() { return "matchObj"; };
 
     fInt = pat(fInt).caseof(Number, matchInt);
     fStr = pat(fStr).caseof(String, matchStr);
@@ -141,7 +141,7 @@ describe("caseof", function() {
 
   it("throws, if no match", function() {
     var fn = function() {};
-    var match = function() { return "match" };
+    var match = function() { return "match"; };
 
     var f1 = pat(fn)
       .caseof(_.isNumber, match);
@@ -153,14 +153,14 @@ describe("caseof", function() {
       .caseof(_.isNumber, match)
       .otherwise(fn);
 
-    expect(function() { f1("foo") }).not.to.throwError();
-    expect(function() { f2("foo") }).to.throwError();
-    expect(function() { f3("foo") }).not.to.throwError();
+    expect(function() { f1("foo"); }).not.to.throwError();
+    expect(function() { f2("foo"); }).to.throwError();
+    expect(function() { f3("foo"); }).not.to.throwError();
   });
 
   it("all rest", function() {
-    var fn = function() { return "fn" };
-    var match = function() { return "match" };
+    var fn = function() { return "fn"; };
+    var match = function() { return "match"; };
 
     var f1 = pat(fn)
       .caseof(pat.rest(_.isNumber), match);
@@ -174,8 +174,8 @@ describe("caseof", function() {
   });
 
   it("packs all rest args to array", function() {
-    var fn = function() { return "fn" };
-    var match = function(first, second, rest) { return rest };
+    var fn = function() { return "fn"; };
+    var match = function(first, second, rest) { return rest; };
 
     var f1 = pat(fn)
       .caseof(Number, Number, pat.rest(_.isNumber), match);
@@ -183,5 +183,5 @@ describe("caseof", function() {
     expect(f1(1)).to.equal("fn");
     expect(f1(1, 2)).to.eql([]);
     expect(f1(1, 2, 3, 4, 5)).to.eql([3, 4, 5]);
-  })
-})
+  });
+});

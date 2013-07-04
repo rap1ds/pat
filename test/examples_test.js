@@ -19,14 +19,14 @@ describe("examples", function(){
       expect(fn(2, 8)).to.be(256);
       expect(fn(2, 9)).to.be(512);
       expect(fn(2, 10)).to.be(1024);
-      expect(function() { fn("foo", "bar") }).to.throwError();
+      expect(function() { fn("foo", "bar"); }).to.throwError();
     }
 
     test(examples.pow1);
     test(examples.pow2);
     test(examples.pow3);
     test(examples.pow4);
-  })
+  });
 });
 
 describe("sum", function(){
@@ -42,5 +42,5 @@ describe("sum", function(){
 
     test(examples.sum1);
     test(examples.sum2);
-  })
+  });
 });
