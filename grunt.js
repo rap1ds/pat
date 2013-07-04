@@ -1,3 +1,4 @@
+/*jshint node:true */
 module.exports = function(grunt) {
   "use strict";
 
@@ -27,11 +28,9 @@ module.exports = function(grunt) {
         sub: true,
         undef: true,
         boss: true,
-        eqnull: true,
-        node: true
+        eqnull: true
       },
       globals: {
-        exports: true,
         it: true,
         describe: true
       }

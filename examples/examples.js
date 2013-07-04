@@ -1,3 +1,4 @@
+/*jshint node:true */
 var pat = require("../lib/pat");
 var _ = require("lodash");
 

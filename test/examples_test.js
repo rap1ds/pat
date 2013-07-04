@@ -1,3 +1,4 @@
+/*jshint node:true */
 "use strict";
 
 var examples = require("../examples/examples");

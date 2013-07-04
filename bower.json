@@ -1,0 +1,15 @@
+{
+  "name": "pat",
+  "version": "0.1.0",
+  "main": "lib/pat.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components",
+    ".gitignore",
+    ".npmignore"
+  ],
+  "dependencies": {
+    "lodash": "1.1.x"
+  }
+}
