@@ -20,6 +20,16 @@ describe("pat", function(){
     var f = function() {};
     expect(pat(f).caseof).to.be.a("function");
   });
+
+  it("passes 'self' as the last argument", function() {
+    var f1 = function(first, second, self) {
+      expect(self).to.be(f2);
+    };
+
+    var f2 = pat().caseof("first", "second", f1);
+
+    f2("first", "second");
+  });
 });
 
 describe("caseof", function() {
