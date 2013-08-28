@@ -1,9 +1,15 @@
 # Pattern matching in JavaScript
 
+## Installation
+
+```bash
+npm install --save patjs
+```
+
 ## Getting Started
 
 ```javascript
-var pat = require('pat');
+var pat = require('patjs');
 
 var pow = pat()
   .caseof(Number, 0, function() { return 1; })
