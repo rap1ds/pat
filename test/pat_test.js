@@ -209,4 +209,16 @@ describe("caseof", function() {
 
     expect(fn("one ", "tw", "o three")).to.equal("matched");
   });
+
+  it("packs all args to array", function() {
+    var fn = function() { return "fn"; };
+    var matchThreeWords = function(all) { return all.join("") === "one two three"; };
+    var match = function(all) { return all; };
+
+    var f1 = pat(fn)
+      .caseof(pat.all(matchThreeWords), match);
+
+    expect(f1("one ", "two")).to.equal("fn");
+    expect(f1("one ", "t", "wo three")).to.be.eql(["one ", "t", "wo three"]);
+  });
 });
