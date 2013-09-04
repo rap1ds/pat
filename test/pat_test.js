@@ -196,4 +196,17 @@ describe("caseof", function() {
     expect(f1(1, 2)).to.eql([]);
     expect(f1(1, 2, 3, 4, 5)).to.eql([3, 4, 5]);
   });
+
+  it("matches all at once", function() {
+    var matchThreeWords = function(all) { return all.join("") === "one two three"; };
+
+    var matched = function() {
+      return "matched";
+    };
+
+    var fn = pat()
+      .caseof(pat.all(matchThreeWords), matched);
+
+    expect(fn("one ", "tw", "o three")).to.equal("matched");
+  });
 });
