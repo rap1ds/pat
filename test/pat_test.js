@@ -99,6 +99,34 @@ describe("caseof", function() {
     expect(f1(1)).to.equal("match");
   });
 
+  it("allows matcher function to return value", function() {
+    var f1 = function() { return "no match"; };
+    var head = function(arr) {
+      if(_.isArray(arr)) {
+        return pat.val(arr[0]);
+      }
+    };
+
+    f1 = pat(f1).caseof(head, _.identity);
+
+    expect(f1(1, 2, 3)).to.equal("no match");
+    expect(f1([1, 2, 3])).to.equal(1);
+  });
+
+  it("allows matcher function to return different number of arguments", function() {
+    var f1 = function() { return "no match"; };
+    var range = function(arr) {
+      if(_.isArray(arr) && arr.length === 2) {
+        return pat.val.apply(null, _.range(arr[0], arr[1]));
+      }
+    };
+
+    f1 = pat(f1).caseof("test1", range, "test2", _.identity);
+
+    expect(f1(1, 5)).to.equal("no match");
+    expect(f1("test1", [1, 5], "test2")).to.equal("test1", 1, 2, 3, 4, 5, "test2");
+  });
+
   it("matches any", function() {
     var f1 = function() { return "f1"; };
     var match = function() { return "match"; };
