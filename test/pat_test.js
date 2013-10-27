@@ -30,6 +30,23 @@ describe("pat", function(){
 
     f2("first", "second");
   });
+
+  it("creates a pattern", function() {
+    expect(pat.pat(Number, Number)).to.eql({
+      args: [Number, Number], 
+      rest: undefined, 
+      all: undefined, 
+      __pat_pattern: true
+    });
+    
+    // Sugar
+    expect(pat(Number, Number)).to.eql({
+      args: [Number, Number], 
+      rest: undefined, 
+      all: undefined,
+      __pat_pattern: true
+    });
+  });
 });
 
 describe("caseof", function() {
@@ -198,7 +215,7 @@ describe("caseof", function() {
     expect(function() { f3("foo"); }).not.to.throwError();
   });
 
-  it("all rest", function() {
+  it("matches all rest", function() {
     var fn = function() { return "fn"; };
     var match = function() { return "match"; };
 
@@ -213,16 +230,40 @@ describe("caseof", function() {
     expect(f2("foo", "bar", 1, 2, 3, true)).to.equal("fn");
   });
 
+  it("passes if rest doesn't have matcher", function() {
+    var fn = function() { return "fn"; };
+    var match = function() { return "match"; };
+    var fooMatch = function() { return "foo match"; };
+
+    var f1 = pat(fn)
+      .caseof(pat.rest(), match);
+
+    var f2 = pat(fn)
+      .caseof("foo", "bar", pat.rest(), fooMatch);
+
+    expect(f1("foo")).to.equal("match");
+    expect(f1(1, 2, "something else")).to.equal("match");
+    expect(f2("foo", "bar", 1, 2, 3)).to.equal("foo match");
+    expect(f2("foo", "bar", 1, 2, 3, true)).to.equal("foo match");
+  });
+
   it("packs all rest args to array", function() {
     var fn = function() { return "fn"; };
     var match = function(first, second, rest) { return rest; };
+    var matchAll = function(rest) { return rest; };
 
     var f1 = pat(fn)
       .caseof(Number, Number, pat.rest(_.isNumber), match);
+    var f2 = pat(fn)
+      .caseof(pat.rest(), matchAll);
 
     expect(f1(1)).to.equal("fn");
     expect(f1(1, 2)).to.eql([]);
     expect(f1(1, 2, 3, 4, 5)).to.eql([3, 4, 5]);
+
+    expect(f2(1)).to.eql([1]);
+    expect(f2(1, 2)).to.eql([1, 2]);
+    expect(f2(1, 2, 3, 4, 5)).to.eql([1, 2, 3, 4, 5]);
   });
 
   it("matches all at once", function() {
@@ -248,5 +289,45 @@ describe("caseof", function() {
 
     expect(f1("one ", "two")).to.equal("fn");
     expect(f1("one ", "t", "wo three")).to.be.eql(["one ", "t", "wo three"]);
+  });
+
+  it("allows nested pattern", function() {
+    var fn = function() { return "no match"; };
+
+    var f1 = pat(fn)
+      .caseof(pat(Number, Number), function(a, b) {
+        return "got numbers " + a + " and " + b;
+      });
+
+    expect(f1(1, 2)).to.equal("no match");
+    expect(f1([1])).to.equal("no match");
+    expect(f1([1, 2])).to.equal("got numbers 1 and 2");
+  });
+
+  it("allows nested pattern inside nested pattern", function() {
+    var fn = function() { return "no match"; };
+
+    var f1 = pat(fn)
+      .caseof(pat(
+        pat(Number, Number), 
+        pat(Number, Number), 
+        pat(Number, Number)), function(x1, y1, x2, y2, x3, y3) {
+        return "got points (1, 2), (3, 4), (5, 6)";
+      });
+
+    expect(f1(1, 2, 3, 4, 5, 6)).to.equal("no match");
+    expect(f1([1, 2, 3, 4, 5, 6])).to.equal("no match");
+    expect(f1([ [1, 2], [3, 4], [5, 6] ])).to.equal("got points (1, 2), (3, 4), (5, 6)");
+
+    var max = pat()
+      .caseof(pat(Number), function(x) {
+        return x;
+      })
+      .caseof(pat(Number, pat.rest()), function(x, xs) {
+        var xsMax = max(xs);
+        return x > xsMax ? x : xsMax;
+      });
+
+    expect(max([5, 3, 7, 9, 3, 7, 8, 3, 5])).to.equal(9);
   });
 });
