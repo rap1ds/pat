@@ -331,23 +331,23 @@ describe("caseof", function() {
     expect(max([5, 3, 7, 9, 3, 7, 8, 3, 5])).to.equal(9);
   });
 
-  it.skip("allows sugarred nested pattern inside nested pattern", function() {
+  it("allows sugarred nested pattern inside nested pattern", function() {
     var fn = function() { return "no match"; };
 
     var f1 = pat(fn)
       .caseof([[Number, Number], [Number, Number], [Number, Number]], function(x1, y1, x2, y2, x3, y3) {
-        return "got points (1, 2), (3, 4), (5, 6)";
+        return ["got points (", x1, y1, "), (", x2, y2, "), (", x3, y3, ")"].join(" ");
       });
 
     expect(f1(1, 2, 3, 4, 5, 6)).to.equal("no match");
     expect(f1([1, 2, 3, 4, 5, 6])).to.equal("no match");
-    expect(f1([ [1, 2], [3, 4], [5, 6] ])).to.equal("got points (1, 2), (3, 4), (5, 6)");
+    expect(f1([ [1, 2], [3, 4], [5, 6] ])).to.equal("got points ( 1 2 ), ( 3 4 ), ( 5 6 )");
 
     var max = pat()
       .caseof([Number], function(x) {
         return x;
       })
-      .caseof([Number, pat.rest], function(x, xs) {
+      .caseof([Number, pat.rest()], function(x, xs) {
         var xsMax = max(xs);
         return x > xsMax ? x : xsMax;
       });
