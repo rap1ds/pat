@@ -16,75 +16,278 @@ var pow = pat()
   .caseof(Number, Number, function(x, y) { 
     return x * pow(x, y - 1 ); 
   });
-
 ```
 
-## Why pattern matching?
+## Create pattern matched function
 
-What is pattern matching? In short, it is a mechanism to choose which variant of a function is the correct one to call. 
-
-Think about a `pow(base, exponent)` function. In fact, `pow` has three variants: 
-
-* If the `exponent` is 0, return 1. 
-* If the `exponent` is greater than zero, return the 'normal' `base` to the `exponent` power.
-* If the `exponent` is less than 0, return 1 divided by the `base` to the `exponent` power.
-
-When `pow` is called, the function has to choose which variant to use. Traditionally, this is done by if-else comparison. Here's an example of `pow` implementation:
+### Syntax 1: Give function as a parameter to `pat`
 
 ```javascript
-function pow1(x, y) {
-  if(y === 0) {
-    return 1;
-  } else if(y < 0) {
-    return 1 / x * pow1(x, ((y * -1) - 1));
+var one = function(n) { return n + " is one"; };
+var notOne = function(n) { return n + " is not one"; };
+
+var isOne = pat(notOne)
+  .caseof(1, one);
+
+isOne(0) # => "1 is not one"
+isOne(1) # => "1 is one"
+```
+
+### Syntax 2: Otherwise
+
+```javascript
+var one = function(n) { return n + " is one"; };
+var notOne = function(n) { return n + " is not one"; };
+
+var isOne = pat()
+  .caseof(1, one)
+  .otherwise(notOne)
+
+isOne(0) // => "0 is not one"
+isOne(1) // => "1 is one"
+```
+
+### Primitives
+
+```javascript
+var one = function(n) { return n + " is one"; };
+var notOne = function(n) { return n + " is not one"; };
+
+var isOne = pat()
+  .caseof(1, one)
+  .otherwise(notOne)
+
+isOne(0) // => "0 is not one"
+isOne(1) // => "1 is one"
+```
+
+```javascript
+var two = function(str) { return n + " is 2"; };
+var notTwo = function(str) { return n + " is not 2"; };
+
+var isTwo = pat()
+  .caseof("two", two)
+  .otherwise(notTwo)
+
+isTwo("one") // => "one is not 2"
+isOne("two") // => "two is 2"
+```
+
+```javascript
+var theTrue = function(bool) { return bool + " is the truth"; };
+var theFalse = function(bool) { return bool + " is not the truth"; };
+
+var isTheTruth = pat()
+  .caseof(true, two)
+  .otherwise(theFalse)
+
+isTheTruth(true)  // => "one is not 2"
+isTheTruth(false) // => "two is 2"
+```
+
+### Arrays and objects
+
+```javascript
+var arrayOneTwoThree = function(arr) { return "got array 1, 2, 3"; };
+var somethingElse = function(x) { return "I don't regocnize " + x; };
+
+var isOneTwoThreeArray = pat()
+  .caseof([1, 2, 3], arrayOneTwoThree)
+  .otherwise(somethingElse);
+
+isOneTwoThreeArray([1, 1, 1]) // => "I don't regocnize [1, 1, 1]"
+isOneTwoThreeArray([1, 2, 3]) // => "got array 1, 2, 3"
+```
+
+```javascript
+var arrayOfTwo2DPoints = function(arr) { return "got points (1, 2), (3, 4)"; };
+var somethingElse = function(x) { return "I don't regocnize " + x; };
+
+var isArrayOfTwo2DPoints = pat()
+  .caseof([[1, 2], [3, 4]], arrayOfTwo2DPoints)
+  .otherwise(somethingElse);
+
+isArrayOfTwo2DPoints([[1, 1], [2, 2]]) // => "I don't regocnize [[1, 1], [2, 2]]"
+isArrayOfTwo2DPoints([[1, 2], [3, 4]]) // => "got points (1, 2), (3, 4)"
+```
+
+```javascript
+var fullName = function(person) { return [person.firstName, person.lastName].join(" "); };
+var somethingElse = function(x) { return ["I don't regocnize person", person.firstName, person.lastName].join(" "); };
+
+var printMikko = pat()
+  .caseof({firstName: "Mikko", lastName: "Koski"}, fullName)
+  .otherwise(somethingElse);
+
+printMikko({firstName: "John", lastName: "Doe"}) // => "I don't regocnize John Doe"
+printMikko({firstName: "Mikko", lastName: "Koski"}) // => "Mikko koski"
+```
+
+### Function
+
+```javascript
+var fullName = function(person) { return [person.firstName, person.lastName].join(" "); };
+var somethingElse = function(x) { return "Invalid person object" };
+
+function isPerson(obj) {
+  var person = obj || {};
+  return person.firstName && person.lastName;
+}
+
+var printAnyName = pat()
+  .caseof(isPerson, fullName)
+  .otherwise(somethingElse);
+
+printMikko({firstName: "Mikko"})                 // => "Invalid person object"
+printMikko({firstName: "John", lastName: "Doe"}) // => "John Doe"
+```
+
+### Types
+
+```javascript
+var number = function(x) { return x + " is a number!" };
+var somethingElse = function(x) { return x + " is not a number" };
+
+var isNumber = pat()
+  .caseof(Number)
+  .otherwise(somethingElse);
+
+isNumber("hello") // => "hello is not a number"
+isNumber(5)       // => "5 is a number!"
+```
+
+### Multiple arguments
+
+```javascript
+var sum = function(a, b, c) { return a + b + c };
+var somethingElse = function() { return "Invalid arguments" };
+
+var sum3 = pat()
+  .caseof(Number, Number, Number, sum)
+  .otherwise(somethingElse);
+
+sum3(1, 2)    // => "Invalid arguments"
+sum3(1, 2, 3) // => 6
+```
+
+### Multiple cases
+
+```javascript
+var sumNumbers = function(a, b) { return a + b; };
+var sumStrings = function(a, b) { return Number(a) + Number(b); };
+var somethingElse = function() { return "Invalid arguments" };
+
+var sum = pat()
+  .caseof(Number, Number, sumNumbers)
+  .caseof(String, String, sumStrings)
+  .otherwise(somethingElse);
+
+sum3(1, 2)     // => 3
+sum3("2", "3") // => 5
+```
+
+### Throws, if no match
+
+```javascript
+var sum2 = function(a, b) { return a + b; };
+
+var sum = pat()
+  .caseof(Number, Number, sum2)
+
+sum3(3, 4) // => 7
+sum3(1)    // => throws
+```
+
+### Any (_)
+
+```javascript
+var print = function(a, _) { return "got number " + a + " and " + typeof _; };
+
+var fn = pat()
+  .caseof(Number, pat._, print)
+
+fn(3, 4)    // => "got number 3 and number"
+fn(1, true) // => "got number 3 and boolean"
+fn(2) // => "throws"
+```
+
+### No arguments
+
+```javascript
+var noArguments = function() { return "Great! No arguments!"; };
+
+var fn = pat()
+  .caseof(noArguments)
+
+fn()  // => "Great! No arguments!"
+fn(1) // => "throws"
+```
+
+### Rest (pat.rest)
+
+```javascript
+var print = function(a, b, rest) { return "Got " + a + ", " + b + " and [" + rest.join("") + "]"; };
+
+var fn = pat()
+  .caseof(Number, Number pat.rest())
+
+fn(1, 2, 3, 4, "five")  // => "Got 1, 2 and [3, 4, five]"
+fn(1) // => "throws"
+```
+
+```javascript
+var print = function(a, b, rest) { return "Got " + a + ", " + b + " and [" + rest.join("") + "]"; };
+
+var fn = pat()
+  .caseof(Number, Number pat.rest(Number))
+
+fn(1, 2, 3, 4, "five")  // => throws
+fn(1, 2, 3, 4, 5)  // => Got 1, 2 and [3, 4, 5]
+```
+
+### All at once (pat.all)
+
+```javascript
+var print = function(nums) { return "Sum " + nums.join(" + ") + " is even" };
+
+function sumEven(args) {
+  console.log("sum even");
+  var sum = args.reduce(function(a, b) { return a + b; });
+  return sum % 2 === 0;
+}
+
+var fn = pat().caseof(pat.all(sumEven), print)
+
+fn(1, 2, 3, 4)     // => Got 1, 2 and [3, 4, 5]
+fn(1, 2, 3, 4, 5)  // => throws
+```
+
+### Matcher function to alter the argument
+
+```javascript
+var firstOfArray = function(arr) {
+  if(Array.isArray(arr)) {
+    return pat.val(arr[0]);
   } else {
-    return x * pow1(x, y - 1);
+    return false;
   }
-}
+};
+
+var print = function(x) { return "First of array is " + x};
+
+var printFirst = pat().caseof(firstOfArray, print);
+
+printFirst([1, 2, 3, 4]);  // => "First of array is 1"
 ```
 
-However, pattern matching let's you get rid of the cubersome `if`s and replace those in more elegant `caseof` control structure.
+### Nested patters
 
 ```javascript
-function lessThan(a) {
-  return function(b) {
-    return b < a;
-  }
-}
-
-var pow2 = pat(function(x, y) {
-    return x * pow2(x, y - 1); 
-  })
-  .caseof(Number, 0, function() {
-    return 1;
-  })
-  .caseof(Number, lessThan(0), function(x, y) {
-    return 1 / x * pow2(x, ((y * -1) - 1));
+var max = pat().caseof([], function() { return null; }).caseof([Number, pat.rest()], function(x, xs) { 
+    var maxXs = max(xs);
+    return x > maxXs ? x : maxXs;
   });
 ```
-
-## Why pattern matching in JavaScript?
-
-JavaScript is dynamically typed language, which means (among other things) that functions can take any number of arguments of any type. The fact that any type is allowed, means that no one warns you if you pass in wrong type. For example, if you pass in `String` when `int` was expected, you might not notice an error if you don't look carefully. Take a `sum` function as an example:
-
-```javascript
-function sum(a, b) {
-  return a + b;
-}
-``` 
-
-Obviously, the `sum` is intended to be used with `int`s, but if you pass in `String`, you see no error but a weird result.
-
-```javascript
-sum(1, 2) === 3
-sum("1", "2") === "12"
-```
-
-Dynamic typing has both advantages and disadvantages. The above example, lack of compiler warnings demonstrates one of the disadvantages. However, the fact that any argument can be passed to function can be also convenient. We JavaScript devs have learned how to use this to write APIs that can take "almost" any argument, and work properly. For example, it's not too hard to implement the `sum` function so that it in fact could work properly with a `string` or an array of ints or maybe even array of strings.
-
-However, implementing the functions to work with multiple different types of arguments is not very interesting coding task. For example, in the `sum` function, the real beef of the functions is the `a + b`. However, if you'd implement sum to liberally take strings and arrays and whatnot, you'd end up writing 10 lines of if-elses to just get the arguments right.
-
-(To be continued...)
 
 ## Examples
 
