@@ -22,6 +22,12 @@ var pow = pat()
 expect(pow(3, 2)).to.eql(9);
 ```
 
+## Dependencies
+
+[Lo-Dash](http://lodash.com/)
+
+([Underscore](http://underscorejs.org/) might work also, but I haven't tested it)
+
 ## Create pattern matched function
 
 ### Syntax 1: Give function as a parameter to `pat`
@@ -51,7 +57,9 @@ expect(isOne(0)).to.eql("0 is not one");
 expect(isOne(1)).to.eql("1 is one");
 ```
 
-### Primitives
+### Primitive values
+
+#### Numbers
 
 ```js
 var one = function(n) { return n + " is one"; };
@@ -65,6 +73,8 @@ expect(isOne(0)).to.eql("0 is not one");
 expect(isOne(1)).to.eql("1 is one");
 ```
 
+#### Strings
+
 ```js
 var two = function(str) { return str + " is 2"; };
 var notTwo = function(str) { return str + " is not 2"; };
@@ -76,6 +86,8 @@ var isTwo = pat()
 expect(isTwo("one")).to.eql("one is not 2");
 expect(isTwo("two")).to.eql("two is 2");
 ```
+
+#### Booleans
 
 ```js
 var theTrue = function(bool) { return bool + " is the truth"; };
@@ -91,6 +103,8 @@ expect(isTheTruth(false)).to.eql("false is not the truth");
 
 ### Arrays and objects
 
+#### Arrays
+
 ```js
 var arrayOneTwoThree = function(arr) { return "got array 1, 2, 3"; };
 var somethingElse = function(x) { return "I don't regocnize " + x.join(", "); };
@@ -103,21 +117,29 @@ expect(isOneTwoThreeArray([1, 1, 1])).to.eql("I don't regocnize 1, 1, 1");
 expect(isOneTwoThreeArray([1, 2, 3])).to.eql("got array 1, 2, 3");
 ```
 
+#### Nested arrays
+
 ```js
-var arrayOfTwo2DPoints = function(arr) { return "got points (1, 2), (3, 4)"; };
+var matched = function(arr) { return "got points (1, 2), (3, 4)"; };
 var somethingElse = function(x) { return "I don't regocnize " + x.join(", "); };
 
-var isArrayOfTwo2DPoints = pat()
-  .caseof([[1, 2], [3, 4]], arrayOfTwo2DPoints)
+var isPoints2D = pat()
+  .caseof([[1, 2], [3, 4]], matched)
   .otherwise(somethingElse);
 
-expect(isArrayOfTwo2DPoints([[1, 1], [2, 2]])).to.eql("I don't regocnize 1,1, 2,2");
-expect(isArrayOfTwo2DPoints([[1, 2], [3, 4]])).to.eql("got points (1, 2), (3, 4)");
+expect(isPoints2D([[1, 1], [2, 2]])).to.eql("I don't regocnize 1,1, 2,2");
+expect(isPoints2D([[1, 2], [3, 4]])).to.eql("got points (1, 2), (3, 4)");
 ```
 
+#### Objects
+
 ```js
-var fullName = function(person) { return [person.firstName, person.lastName].join(" "); };
-var somethingElse = function(person) { return ["I don't regocnize", person.firstName, person.lastName].join(" "); };
+var fullName = function(person) { 
+  return [person.firstName, person.lastName].join(" ");
+};
+var somethingElse = function(person) { 
+  return ["I don't regocnize", person.firstName, person.lastName].join(" "); 
+};
 
 var printMikko = pat()
   .caseof({firstName: "Mikko", lastName: "Koski"}, fullName)
@@ -130,8 +152,12 @@ expect(printMikko({firstName: "Mikko", lastName: "Koski"})).to.eql("Mikko Koski"
 ### Function
 
 ```js
-var fullName = function(person) { return [person.firstName, person.lastName].join(" "); };
-var somethingElse = function() { return "Invalid person object" };
+var fullName = function(person) { 
+  return [person.firstName, person.lastName].join(" ");
+};
+var somethingElse = function() { 
+  return "Invalid person object";
+};
 
 function isPerson(obj) {
   var person = obj || {};
@@ -142,8 +168,8 @@ var printAnyName = pat()
   .caseof(isPerson, fullName)
   .otherwise(somethingElse);
 
-printAnyName({firstName: "Mikko"});                 // => "Invalid person object"
-printAnyName({firstName: "John", lastName: "Doe"}); // => "John Doe"
+expect(printAnyName({firstName: "Mikko"})).to.eql("Invalid person object");
+expect(printAnyName({firstName: "John", lastName: "Doe"})).to.eql("John Doe");
 ```
 
 ### Types
@@ -251,7 +277,7 @@ expect(fn(1, 2, 3, 4, 5)).to.eql("Got 1, 2 and [3, 4, 5]");
 expect(function() { fn(1, 2, 3, 4, "five"); }).to.throwException();
 ```
 
-### All at once (pat.all)
+### All at once
 
 ```javascript
 var print = function(nums) { return "Sum " + nums.join(" + ") + " is even" };
@@ -298,6 +324,14 @@ var max = pat()
 
 expect(max([1, 6, 4, 5, 7, 91, 53, 73])).to.eql(91)
 ```
+
+## Project values (!!1)
+
+Every project has to have some hard-core values, here's mine:
+
+* Clean and easy api
+* 100% test coverage
+* Spread the joy of Functional Programming in JavaScript
 
 ## Contributing
 

@@ -82,12 +82,14 @@ describe("create patter matched function", function() {
 });
 
 /**
-  ### Primitives
+  ### Primitive values
 */
 describe("primitives", function() {
   it("numbers", function() {
     /**
-    ```js
+      #### Numbers
+
+      ```js
     */
     var one = function(n) { return n + " is one"; };
     var notOne = function(n) { return n + " is not one"; };
@@ -99,12 +101,14 @@ describe("primitives", function() {
     expect(isOne(0)).to.eql("0 is not one");
     expect(isOne(1)).to.eql("1 is one");
     /**
-    ```
+      ```
     */
   });
 
   it("strings", function() {
     /**
+      #### Strings
+
       ```js
     */
     var two = function(str) { return str + " is 2"; };
@@ -117,12 +121,14 @@ describe("primitives", function() {
     expect(isTwo("one")).to.eql("one is not 2");
     expect(isTwo("two")).to.eql("two is 2");
     /**
-    ```
+      ```
     */
   });
 
   it("boolean", function() {
     /**
+      #### Booleans
+
       ```js
     */
     var theTrue = function(bool) { return bool + " is the truth"; };
@@ -146,6 +152,8 @@ describe("primitives", function() {
 describe("arrays and objects", function() {
   it("arrays", function() {
     /**
+      #### Arrays
+
       ```js
     */
     var arrayOneTwoThree = function(arr) { return "got array 1, 2, 3"; };
@@ -164,17 +172,19 @@ describe("arrays and objects", function() {
 
   it("nested arrays", function() {
     /**
+      #### Nested arrays
+
       ```js
     */
-    var arrayOfTwo2DPoints = function(arr) { return "got points (1, 2), (3, 4)"; };
+    var matched = function(arr) { return "got points (1, 2), (3, 4)"; };
     var somethingElse = function(x) { return "I don't regocnize " + x.join(", "); };
 
-    var isArrayOfTwo2DPoints = pat()
-      .caseof([[1, 2], [3, 4]], arrayOfTwo2DPoints)
+    var isPoints2D = pat()
+      .caseof([[1, 2], [3, 4]], matched)
       .otherwise(somethingElse);
 
-    expect(isArrayOfTwo2DPoints([[1, 1], [2, 2]])).to.eql("I don't regocnize 1,1, 2,2");
-    expect(isArrayOfTwo2DPoints([[1, 2], [3, 4]])).to.eql("got points (1, 2), (3, 4)");
+    expect(isPoints2D([[1, 1], [2, 2]])).to.eql("I don't regocnize 1,1, 2,2");
+    expect(isPoints2D([[1, 2], [3, 4]])).to.eql("got points (1, 2), (3, 4)");
     /**
       ```
     */
@@ -182,10 +192,16 @@ describe("arrays and objects", function() {
 
   it("objects", function() {
     /**
+      #### Objects
+
       ```js
     */
-    var fullName = function(person) { return [person.firstName, person.lastName].join(" "); };
-    var somethingElse = function(person) { return ["I don't regocnize", person.firstName, person.lastName].join(" "); };
+    var fullName = function(person) { 
+      return [person.firstName, person.lastName].join(" ");
+    };
+    var somethingElse = function(person) { 
+      return ["I don't regocnize", person.firstName, person.lastName].join(" "); 
+    };
 
     var printMikko = pat()
       .caseof({firstName: "Mikko", lastName: "Koski"}, fullName)
@@ -207,8 +223,12 @@ describe("function", function() {
     /**
       ```js
     */
-    var fullName = function(person) { return [person.firstName, person.lastName].join(" "); };
-    var somethingElse = function() { return "Invalid person object" };
+    var fullName = function(person) { 
+      return [person.firstName, person.lastName].join(" ");
+    };
+    var somethingElse = function() { 
+      return "Invalid person object";
+    };
 
     function isPerson(obj) {
       var person = obj || {};
@@ -219,8 +239,8 @@ describe("function", function() {
       .caseof(isPerson, fullName)
       .otherwise(somethingElse);
 
-    printAnyName({firstName: "Mikko"});                 // => "Invalid person object"
-    printAnyName({firstName: "John", lastName: "Doe"}); // => "John Doe"
+    expect(printAnyName({firstName: "Mikko"})).to.eql("Invalid person object");
+    expect(printAnyName({firstName: "John", lastName: "Doe"})).to.eql("John Doe");
     /**
       ```
     */
