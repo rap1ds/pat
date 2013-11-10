@@ -1,0 +1,8 @@
+{
+  "name":  "pat-browser-example",
+  "version": "0.0.1",
+  "dependencies": {
+    "pat": "latest",
+    "lodash": "1.1.x"
+  }
+}

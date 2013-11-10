@@ -1,0 +1,25 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Pat Browser Example</title>
+  <meta name="description" content="Examples of how to use Pat in browser">
+  <meta name="author" content="Mikko Koski">
+</head>
+  <script src="bower_components/lodash/lodash.js"></script>
+  <script src="bower_components/pat/lib/pat.js"></script>
+  <script src="../examples.js"></script>
+  <script>
+    console.log("pow1(2, 2) =>", myMathLib.pow1(2, 2));
+    console.log("pow2(3, 3) =>", myMathLib.pow1(3, 3));
+    console.log("pow3(2, 3) =>", myMathLib.pow1(2, 3));
+    console.log("pow4(4, 2) =>", myMathLib.pow1(4, 2));
+    console.log("sum1('9', '2', '11') =>", myMathLib.sum1(['9', '2', '11']));
+    console.log("sum2(9, 2, 11) =>", myMathLib.sum2([9, 2, 11]));
+  </script>
+<body>
+  Check your Console
+</body>
+</html>

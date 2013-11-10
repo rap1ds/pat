@@ -1,0 +1,10 @@
+{
+  "name": "pat-node-examples",
+  "version": "0.0.0",
+  "main": "node.js",
+  "author": "Mikko Koski",
+  "dependencies": {
+    "pat": "*",
+    "lodash": "1.1.x"
+  }
+}
