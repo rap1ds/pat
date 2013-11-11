@@ -1,7 +1,7 @@
 {
   "name": "patjs",
   "description": "Pattern matching in JavaScript",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "homepage": "https://github.com/rap1ds/pat",
   "author": {
     "name": "Mikko Koski",
