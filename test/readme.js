@@ -11,7 +11,7 @@ var expect = require("expect.js");
   ```
 
   ```bash
-  bower install --save patjs
+  bower install --save pat
   ```
 */
 
@@ -19,7 +19,7 @@ var expect = require("expect.js");
   ## Getting Started
 
   ```js
-  var pat = require("pat");
+  var pat = require("patjs");
   ```
 */
 describe("getting started", function(){

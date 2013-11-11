@@ -1,7 +1,5 @@
 /*jshint node:true */
-var pat = require("pat");
-
-var myMathLib = require("../examples");
+var myMathLib = require("./examples");
 
 console.log("pow1(2, 2) =>", myMathLib.pow1(2, 2));
 console.log("pow2(3, 3) =>", myMathLib.pow1(3, 3));

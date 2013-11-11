@@ -4,7 +4,7 @@
   "main": "node.js",
   "author": "Mikko Koski",
   "dependencies": {
-    "pat": "*",
+    "patjs": "*",
     "lodash": "~2.2.1"
   }
 }

@@ -147,11 +147,12 @@ var createMyMathLib = function(pat, _) {
 
 // Export
 if(typeof module !== "undefined") {
+  var pat = require("patjs");
+  var _ = require("lodash");
   module.exports = createMyMathLib(pat, _);
 }
 else if(typeof define !== "undefined") {
   define(["pat", "lodash"], function(pat, _) {
-      debugger;
     return createMyMathLib(pat, _);
   });
 }

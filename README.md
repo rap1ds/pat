@@ -7,13 +7,13 @@ npm install --save patjs
 ```
 
 ```bash
-bower install --save patjs
+bower install --save pat
 ```
 
 ## Getting Started
 
 ```js
-var pat = require("pat");
+var pat = require("patjs");
 ```
 
 ```js
