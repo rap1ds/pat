@@ -480,7 +480,7 @@ describe("all", function() {
 });
 
 /**
-  ### Matcher function to alter the argument
+  ### Matcher functions can modify the arguments
 */
 
 describe("argument modifying", function() {

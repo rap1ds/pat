@@ -309,7 +309,7 @@ expect(fn(1, 2, 3, 4)).to.eql("Sum 1 + 2 + 3 + 4 is even");
 expect(function() { fn(1, 2, 3, 4, 5); }).to.throwException("throws");
 ```
 
-### Matcher function to alter the argument
+### Matcher functions can modify the arguments
 
 ```js
 var head = function(arr) {
