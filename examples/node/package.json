@@ -5,6 +5,6 @@
   "author": "Mikko Koski",
   "dependencies": {
     "pat": "*",
-    "lodash": "1.1.x"
+    "lodash": "~2.2.1"
   }
 }

@@ -28,8 +28,6 @@ expect(pow(3, 2)).to.eql(9);
 
 ([Underscore](http://underscorejs.org/) might work also, but I haven't tested it)
 
-## Create pattern matched function
-
 ### Syntax 1: Give function as a parameter to `pat`
 
 ```js
@@ -332,6 +330,7 @@ Every project has to have some hard-core values, here's mine:
 * Clean and easy api
 * 100% test coverage
 * Spread the joy of Functional Programming in JavaScript
+
 
 ## Contributing
 

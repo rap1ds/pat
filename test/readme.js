@@ -37,6 +37,14 @@ describe("getting started", function(){
 });
 
 /**
+  ## Dependencies
+
+  [Lo-Dash](http://lodash.com/)
+
+  ([Underscore](http://underscorejs.org/) might work also, but I haven't tested it)
+*/
+
+/*
   ## Create pattern matched function
 */
 describe("create patter matched function", function() {
@@ -430,7 +438,7 @@ describe("rest with type", function() {
 });
 
 /**
-  ### All at once (pat.all)
+  ### All at once
 */
 
 describe("all", function() {
@@ -508,6 +516,16 @@ describe("nested patterns", function() {
 });
 
 /**
+
+  ## Project values (!!1)
+
+  Every project has to have some hard-core values, here's mine:
+
+  * Clean and easy api
+  * 100% test coverage
+  * Spread the joy of Functional Programming in JavaScript
+
+
   ## Contributing
   
   1. Fork

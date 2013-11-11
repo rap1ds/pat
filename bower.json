@@ -1,6 +1,6 @@
 {
   "name": "pat",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "main": "lib/pat.js",
   "ignore": [
     "**/.*",
@@ -10,6 +10,6 @@
     ".npmignore"
   ],
   "dependencies": {
-    "lodash": "1.1.x"
+    "lodash": "~2.2.1"
   }
 }

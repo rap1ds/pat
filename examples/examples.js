@@ -1,4 +1,4 @@
-(function(global) {
+var createMyMathLib = function(pat, _) {
 
   /**
    * For-loop, no pattern mathing
@@ -135,7 +135,7 @@
       return intArray.reduce(function(a, b) { return a + b }, 0);
     });
 
-  var myMathLib = Object.freeze({
+  return Object.freeze({
     pow1: pow1,
     pow2: pow2,
     pow3: pow3,
@@ -143,10 +143,18 @@
     sum1: sum1,
     sum2: sum2
   });
+};
 
-  if(typeof module !== "undefined") {
-    module.exports = myMathLib;
-  } else {
-    global.myMathLib = myMathLib;
-  }
-})(this);
+// Export
+if(typeof module !== "undefined") {
+  module.exports = createMyMathLib(pat, _);
+}
+else if(typeof define !== "undefined") {
+  define(["pat", "lodash"], function(pat, _) {
+      debugger;
+    return createMyMathLib(pat, _);
+  });
+}
+else {
+  this.myMathLib = createMyMathLib(pat, _);
+}
