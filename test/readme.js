@@ -9,6 +9,10 @@ var expect = require("expect.js");
   ```bash
   npm install --save patjs
   ```
+
+  ```bash
+  bower install --save patjs
+  ```
 */
 
 /**
@@ -44,10 +48,10 @@ describe("getting started", function(){
   ([Underscore](http://underscorejs.org/) might work also, but I haven't tested it)
 */
 
-/*
-  ## Create pattern matched function
+/**
+  ## Create a function which uses `pat`
 */
-describe("create patter matched function", function() {
+describe("create pattern matched function", function() {
 
   it("syntax1", function() {
     /**
@@ -90,7 +94,7 @@ describe("create patter matched function", function() {
 });
 
 /**
-  ### Primitive values
+  ### Match against primitive values
 */
 describe("primitives", function() {
   it("numbers", function() {
@@ -155,7 +159,7 @@ describe("primitives", function() {
 });
 
 /**
-  ### Arrays and objects
+  ### Match against arrays and objects
 */
 describe("arrays and objects", function() {
   it("arrays", function() {
@@ -224,7 +228,7 @@ describe("arrays and objects", function() {
 });
 
 /**
-  ### Function
+  ### Matcher function
 */
 describe("function", function() {
   it("takes function", function() {
@@ -256,7 +260,9 @@ describe("function", function() {
 });
 
 /**
-  ### Types
+  ### Match against types
+
+  Use constructor functions `Number`, `String`, `Boolean`, `Array` and `Object` to match against function argument types
 */
 describe("types", function() {
   it("can match a type", function() {
@@ -280,6 +286,8 @@ describe("types", function() {
 
 /**
   ### Multiple arguments
+
+  The `caseof` function can take any number of arguments.
 */
 describe("multiple arguments", function() {
   it("allows multiple arguments", function() {
@@ -303,6 +311,8 @@ describe("multiple arguments", function() {
 
 /**
   ### Multiple cases
+
+  You can have any number of `caseof`s.
 */
 describe("multiple cases", function() {
   it("allows multiple cases", function() {
@@ -349,7 +359,9 @@ describe("throws, if not match", function() {
 });
 
 /**
-  ### Any (_)
+  ### Any
+
+  `pat._` matches to anything.
 */
 
 describe("any", function() {
@@ -395,6 +407,8 @@ describe("no arguments", function() {
 
 /**
   ### Rest
+
+  `pat.rest()` matches to all the rest arguments and packs them to an array.
 */
 
 describe("rest", function() {
@@ -417,6 +431,8 @@ describe("rest", function() {
 
 /**
   ### Rest with type
+
+  `pat.rest()` can take type as an argument.
 */
 
 describe("rest with type", function() {
@@ -472,7 +488,7 @@ describe("argument modifying", function() {
     /**
       ```js
     */
-    var firstOfArray = function(arr) {
+    var head = function(arr) {
       if(Array.isArray(arr)) {
         return pat.val(arr[0]);
       } else {
@@ -480,11 +496,12 @@ describe("argument modifying", function() {
       }
     };
 
-    var print = function(x) { return "First of array is " + x};
-
-    var printFirst = pat().caseof(firstOfArray, print);
-
-    expect(printFirst([1, 2, 3, 4])).to.eql("First of array is 1");
+    var print = function(x) { return "Head of an array is " + x};
+    
+    var printFirst = pat()
+      .caseof(head, print);
+    
+    expect(printFirst([1, 2, 3, 4])).to.eql("Head of an array is 1");
     /**
       ```
     */
@@ -493,6 +510,9 @@ describe("argument modifying", function() {
 
 /**
   ### Nested patters
+
+  Use array syntax `[]` for nested patterns. With nested patterns you can match
+  against an array and take its head and rest of it (like `x :: xs`).
 */
 
 describe("nested patterns", function() {

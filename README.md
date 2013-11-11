@@ -6,6 +6,10 @@
 npm install --save patjs
 ```
 
+```bash
+bower install --save patjs
+```
+
 ## Getting Started
 
 ```js
@@ -27,6 +31,8 @@ expect(pow(3, 2)).to.eql(9);
 [Lo-Dash](http://lodash.com/)
 
 ([Underscore](http://underscorejs.org/) might work also, but I haven't tested it)
+
+## Create a function which uses `pat`
 
 ### Syntax 1: Give function as a parameter to `pat`
 
@@ -55,7 +61,7 @@ expect(isOne(0)).to.eql("0 is not one");
 expect(isOne(1)).to.eql("1 is one");
 ```
 
-### Primitive values
+### Match against primitive values
 
 #### Numbers
 
@@ -99,7 +105,7 @@ expect(isTheTruth(true)).to.eql("true is the truth");
 expect(isTheTruth(false)).to.eql("false is not the truth");
 ```
 
-### Arrays and objects
+### Match against arrays and objects
 
 #### Arrays
 
@@ -147,7 +153,7 @@ expect(printMikko({firstName: "John", lastName: "Doe"})).to.eql("I don't regocni
 expect(printMikko({firstName: "Mikko", lastName: "Koski"})).to.eql("Mikko Koski");
 ```
 
-### Function
+### Matcher function
 
 ```js
 var fullName = function(person) { 
@@ -170,7 +176,9 @@ expect(printAnyName({firstName: "Mikko"})).to.eql("Invalid person object");
 expect(printAnyName({firstName: "John", lastName: "Doe"})).to.eql("John Doe");
 ```
 
-### Types
+### Match against types
+
+Use constructor functions `Number`, `String`, `Boolean`, `Array` and `Object` to match against function argument types
 
 ```js
 var number = function(x) { return x + " is a number!" };
@@ -186,6 +194,8 @@ expect(isNumber(5)).to.eql("5 is a number!");
 
 ### Multiple arguments
 
+The `caseof` function can take any number of arguments.
+
 ```js
 var sum = function(a, b, c) { return a + b + c };
 var somethingElse = function() { return "Invalid arguments" };
@@ -199,6 +209,8 @@ expect(sum3(1, 2, 3)).to.eql(6);
 ```
 
 ### Multiple cases
+
+You can have any number of `caseof`s.
 
 ```js
 var sumNumbers = function(a, b) { return a + b; };
@@ -226,7 +238,9 @@ expect(sum(3, 4)).to.eql(7);
 expect(function() { sum(1); }).to.throwException();
 ```
 
-### Any (_)
+### Any
+
+`pat._` matches to anything.
 
 ```javascript
 var print = function(a, _) { return "got number " + a + " and " + typeof _; };
@@ -253,6 +267,8 @@ expect(function() { fn(1); }).to.throwException("throws");
 
 ### Rest
 
+`pat.rest()` matches to all the rest arguments and packs them to an array.
+
 ```js
 var print = function(a, b, rest) { return "Got " + a + ", " + b + " and [" + rest.join(", ") + "]"; };
 
@@ -264,6 +280,8 @@ expect(function() { fn(1); }).to.throwException("throws");
 ```
 
 ### Rest with type
+
+`pat.rest()` can take type as an argument.
 
 ```js
 var print = function(a, b, rest) { return "Got " + a + ", " + b + " and [" + rest.join(", ") + "]"; };
@@ -294,7 +312,7 @@ expect(function() { fn(1, 2, 3, 4, 5); }).to.throwException("throws");
 ### Matcher function to alter the argument
 
 ```js
-var firstOfArray = function(arr) {
+var head = function(arr) {
   if(Array.isArray(arr)) {
     return pat.val(arr[0]);
   } else {
@@ -302,14 +320,18 @@ var firstOfArray = function(arr) {
   }
 };
 
-var print = function(x) { return "First of array is " + x};
+var print = function(x) { return "Head of an array is " + x};
 
-var printFirst = pat().caseof(firstOfArray, print);
+var printFirst = pat()
+  .caseof(head, print);
 
-expect(printFirst([1, 2, 3, 4])).to.eql("First of array is 1");
+expect(printFirst([1, 2, 3, 4])).to.eql("Head of an array is 1");
 ```
 
 ### Nested patters
+
+Use array syntax `[]` for nested patterns. With nested patterns you can match
+against an array and take its head and rest of it (like `x :: xs`).
 
 ```js
 var max = pat()
