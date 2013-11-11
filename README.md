@@ -345,6 +345,12 @@ var max = pat()
 expect(max([1, 6, 4, 5, 7, 91, 53, 73])).to.eql(91)
 ```
 
+## Examples
+
+See [examples/](examples/)
+
+Before you run the examples, remember to install the dependencies with `npm install` or `bower install`.
+
 ## Project values (!!1)
 
 Every project has to have some hard-core values, here's mine:

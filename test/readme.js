@@ -537,6 +537,12 @@ describe("nested patterns", function() {
 
 /**
 
+  ## Examples
+
+  See [examples/](examples/)
+
+  Before you run the examples, remember to install the dependencies with `npm install` or `bower install`.
+
   ## Project values (!!1)
 
   Every project has to have some hard-core values, here's mine:
